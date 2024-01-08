@@ -1,0 +1,64 @@
+# Import the random and streamlit modules
+import random
+import streamlit as st
+
+# Define the set of words you want to use as a multiline string
+words = """
+punk
+wizard
+animal
+demigod
+DJ
+Cheshire
+hippie
+burled woodgrain
+marble
+archangel
+gnome
+mythical
+mystical
+pepe
+iridescent
+vaporwave
+musician
+unicorn
+hummingbird
+robot
+android
+"""
+
+# Split the string by spaces to get a list of words
+words = words.split()
+
+# Define the number of words you want in the string
+num_words = 20
+
+# Initialize the session state with the default words
+if "words" not in st.session_state:
+    st.session_state.words = words
+
+# Display the string in a text area
+st.text_area("Random string", " ".join(st.session_state.words))
+
+# Create a button that copies the string to the clipboard
+if st.button("Copy to clipboard"):
+    st.write("Text copied successfully!")
+    st.experimental_set_query_params(text=" ".join(st.session_state.words)) # This is a workaround to access the clipboard
+
+# Create a text input for editing or adding words
+user_input = st.text_input("Edit or Add Words", " ".join(st.session_state.words))
+
+# Create a button that generates a new result
+if st.button("Generate Again"):
+    # Update the session state with the user input
+    st.session_state.words = user_input.split()
+    # Generate a random sample of words from the set
+    random_words = random.sample(st.session_state.words, num_words)
+    # Join the words with a space to form a string
+    random_string = " ".join(random_words)
+    # Display the new string in a text area
+    st.text_area("Random string", random_string)
+    # Create a button that copies the new string to the clipboard
+    if st.button("Copy to clipboard"):
+        st.write("Text copied successfully!")
+        st.experimental_set_query_params(text=random_string) # This is a workaround to access the clipboard
